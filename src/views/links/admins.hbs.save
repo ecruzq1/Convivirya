@@ -1,0 +1,210 @@
+<script>
+    function validarcedula() {
+    var i; function generarPDFAdmins() {
+    var cedula; var doc = new jsPDF();
+    var acumulado; var header = function (data) {
+    cedula = document.Empleado_Form.EEEMP_CED.value; doc.setFontSize(18);
+    console.log(cedula.length); doc.setTextColor(40);
+    if (cedula.length == 10) { doc.setFontStyle('normal');
+      var instancia; doc.addImage(imgData, 'PNG', 5, 5, 20, 22)
+      acumulado = 0; doc.text("Reporte de Administradores " + fecha_actual(), 100, 25, 'center');
+      for (i = 1; i <= 9; i++) { };
+        if (i % 2 != 0) { doc.autoTable({ html: '#myTable', margin: { top: 30 }, beforePageContent: header, theme: 'grid' });
+          instancia = cedula.substring(i - 1, i) * 2; doc.save('Administradores_Informe_' + fecha_actual() + '.pdf');
+          if (instancia > 9) instancia -= 9; } </script> <div class="container">
+        }  <form method="post" action="/crud_admin">
+        else instancia = cedula.substring(i - 1, i); <!-- Modal -->
+        acumulado += parseInt(instancia); <div class="modal fade bd-example-modal-lg" id="Admin_modal_Add" role="dialog" aria-labelledby="myLargeModalLabel">
+      }      <div class="modal-dialog modal-lg" role="document">
+      while (acumulado > 0) <div class="modal-content">
+        acumulado -= 10; <div class="modal-header">
+      if (cedula.substring(9, 10) != (acumulado * -1)) { <h5 class="modal-title" id="exampleModalLabel">
+        alert("Cedula no valida!!"); <i class="fas fa-plus-circle"></i> Agregar Administrador</h5>
+        document.Empleado_Form.EEEMP_CED.value=""; </div>
+        document.Empleado_Form.EEEMP_CED.setfocus(); <div class="modal-body">
+      }            <div class="form-row">
+                    <div class="form-gropup col-md-6">
+    }else if(cedula.length > 10){ <label>NOMBRE</label>
+        alert("Cedula no valida!!"); <input type="text" class="form-control" name="ADM_NOMBRE" required>
+        document.Empleado_Form.EEEMP_CED.value=""; </div>
+        document.Empleado_Form.EEEMP_CED.setfocus(); <div class="form-gropup col-md-6">
+    }                <label>APELLIDO</label>
+  }                <input type="text" class="form-control" name="ADM_APELLIDO" required>
+function validarcedulaFin() { </div>
+    var i; <div class="form-gropup col-md-6">
+    var cedula; <label>USUARIO</label>
+    var acumulado; <input type="text" class="form-control" name="ADM_USUARIO" required>
+    cedula = document.Empleado_Form.EEEMP_CED.value; </div>
+      var instancia; <div class="form-gropup col-md-6">
+      acumulado = 0; <label>CONDOMINIO</label>
+      for (i = 1; i <= 9; i++) { <select class="selectpicker form-control" data-live-search="true" name="COND_ID" required>
+        if (i % 2 != 0) { {{#each condominios}}
+          instancia = cedula.substring(i - 1, i) * 2; <option value="{{COND_ID}}">{{COND_NOMBRE}}</option>
+          if (instancia > 9) instancia -= 9; {{/each}}
+        }                </select>
+        else instancia = cedula.substring(i - 1, i); </div>
+        acumulado += parseInt(instancia); <div class="form-gropup col-md-6">
+      }                <label>CÉDULA</label>
+      while (acumulado > 0) <input type="text" class="form-control" name="ADM_CEDULA" required>
+        acumulado -= 10; </div>
+      if (cedula.substring(9, 10) != (acumulado * -1)) { <div class="form-gropup col-md-6">
+        alert("Cedula no valida!!"); <label>TELÉFONO</label>
+        document.Empleado_Form.EEEMP_CED.value=""; <input type="text" class="form-control" name="ADM_TELEFONO" required>
+        document.Empleado_Form.EEEMP_CED.setfocus(); </div>
+      }              <div class="form-gropup col-md-6">
+                      <label>CORREO</label>
+                    <input type="email" class="form-control" name="ADM_CORREO" required>
+  }              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="ADM_ESTADO" value="ACTIVO">
+          <div class="modal-footer">
+            <button value="btn_ingresarAdmin" type="submit" name="accion" class="btn btn-success">
+              <i class="fas fa-plus-circle"></i> Agregar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  <form method="post" action="/crud_admin">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Admin_modal_Edit" role="dialog" aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-edit"></i> Editar Administrador</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>NOMBRE</label>
+                <input type="text" class="form-control" name="ADM_NOMBRE" value="{{admin.ADM_NOMBRE}}" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>APELLIDO</label>
+                <input type="text" class="form-control" name="ADM_APELLIDO" value="{{admin.ADM_APELLIDO}}" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>USUARIO</label>
+                <input type="text" class="form-control" name="ADM_USUARIO" value="{{admin.ADM_USUARIO}}" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>CONJUNTO</label>
+                <select class="selectpicker form-control" data-live-search="true" name="COND_ID" required>
+                  <option value="{{admin.COND_ID}}">{{admin.COND_NOMBRE}}</option>
+                  {{#each condominios}}
+                  <option value="{{COND_ID}}">{{COND_NOMBRE}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>CÉDULA</label>
+                <input type="text" class="form-control" name="ADM_CEDULA" value="{{admin.ADM_CEDULA}}" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>TELÉFONO</label>
+                <input type="text" class="form-control" name="ADM_TELEFONO" value="{{admin.ADM_TELEFONO}}" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>CORREO</label>
+                <input type="text" class="form-control" name="ADM_CORREO" value="{{admin.ADM_CORREO}}" required>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="ADM_PASSWORD" value="{{admin.ADM_PASSWORD}}">
+          <input type="hidden" class="form-control" name="ADM_ID" value="{{admin.ADM_ID}}">
+          <input type="hidden" class="form-control" name="ADM_ESTADO" value="ACTIVO">
+          <div class="modal-footer">
+            <button value="btn_modificarAdmin" type="submit" name="accion" class="btn btn-warning">
+              <i class="fas fa-edit"></i> Modificar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>
+            <i class="fas fa-users-cog fa-lg"></i> Gestión
+            <b>Administradores </b>
+          </h2>
+        </div>
+        <div class="col-sm-6">
+          <a class="btn btn-success" data-toggle="modal" data-target="#Admin_modal_Add">
+            <i class="fas fa-plus-circle"></i>
+            <span>Agregar Administrador</span>
+          </a>
+          <a class="btn btn-danger" onclick="generarPDFAdmins();">
+            <i class="fas fa-print"></i>
+            <span>Imprimir</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover"></table>
+      <table id="myTable" class="table table-hover table-">
+        <thead>
+          <tr>
+            <th>
+              <i class="far fa-address-card fa-lg"></i> Usuario</th>
+            <th>
+              <i class="fas fa-city"></i> Condominio</th>
+            <th>
+              <i class="fas fa-signature"></i> Nombres</th>
+            <th>
+              <i class="fas fa-envelope"></i> Correo</th>
+            <th>
+              <i class="fas fa-phone-square"></i> Teléfono</th>
+            <th>
+              <i class="fas fa-exclamation"></i> Acción</th>
+          </tr>
+        </thead>
+        {{#each administradores}}
+        <tr>
+          <td>{{ADM_USUARIO}}</td>
+          <td>{{COND_NOMBRE}}</td>
+          <td>{{ADM_NOMBRE}} {{ADM_APELLIDO}}</td>
+          <td>{{ADM_CORREO}}</td>
+          <td>{{ADM_TELEFONO}}</td>
+          <form action="/crud_admin" method="post">
+
+            <td>
+              <center>
+                <input type="hidden" value="{{ADM_USUARIO}}" name="ADM_USUARIO">
+                <input type="hidden" value="{{COND_ID}}" name="COND_ID">
+                <button value="btn_seleccioanrAdmin" type="submit" name="accion" class="btn btn-secondary">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button value="btn_eliminarAdmin" type="submit" name="accion" class="btn btn-secondary">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </center>
+            </td>
+
+          </form>
+        </tr>
+
+        {{else}}
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No existen Administradores.</p>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Admin_modal">
+              Agregar Administrador
+            </button>
+          </div>
+        </div>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+</div>

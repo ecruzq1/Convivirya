@@ -1,0 +1,123 @@
+<script>
+  function validarcedulaAdd() {
+    var i;
+    var cedula;
+    var acumulado;
+    cedula = document.form_admin_add.ADM_CEDULA.value;
+    console.log(cedula.length);
+    if (cedula.length == 10) {
+      var instancia;
+      acumulado = 0;
+      for (i = 1; i <= 9; i++) {
+        if (i % 2 != 0) {
+          instancia = cedula.substring(i - 1, i) * 2;
+          if (instancia > 9) instancia -= 9;
+        }
+        else instancia = cedula.substring(i - 1, i);
+        acumulado += parseInt(instancia);
+      }
+      while (acumulado > 0)
+        acumulado -= 10;
+      if (cedula.substring(9, 10) != (acumulado * -1)) {
+        alert("Cedula no valida!!");
+        document.form_admin_add.ADM_CEDULA.value="";
+        document.form_admin_add.ADM_CEDULA.setfocus();
+      }
+      
+    }else if(cedula.length > 10){
+        alert("Cedula no valida!!");
+        document.form_admin_add.ADM_CEDULA.value="";
+        document.form_admin_add.ADM_CEDULA.setfocus();
+    }
+  }
+ 
+function validarcedulaFinAdd() {
+    var i;
+    var cedula;
+    var acumulado;
+    cedula = document.form_admin_add.ADM_CEDULA.value;
+      var instancia;
+      acumulado = 0;
+      for (i = 1; i <= 9; i++) {
+        if (i % 2 != 0) {
+          instancia = cedula.substring(i - 1, i) * 2;
+          if (instancia > 9) instancia -= 9;
+        }
+        else instancia = cedula.substring(i - 1, i);
+        acumulado += parseInt(instancia);
+      }
+      while (acumulado > 0)
+        acumulado -= 10;
+      if (cedula.substring(9, 10) != (acumulado * -1)) {
+        alert("Cedula no valida!!");
+        document.form_admin_add.ADM_CEDULA.value="";
+        document.form_admin_add.ADM_CEDULA.setfocus();
+      }
+      
+    
+  }
+
+</script>
+<div class="container">
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>
+            <i class="fas fa-users fa-lg"> </i>Mis
+            <b>Datos</b>
+          </h2>
+        </div>
+        <div class="col-sm-6">
+          <a href="/usuariopassword" class="btn btn-danger">
+            <span>Cambiar Contraseña</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <form name="form_admin_add" method="post" action="/crud_usuariodatos">
+
+      <div class="form-row">
+        <div class="form-gropup col-md-8">
+          <label>Usuario</label>
+          <input type="text" class="form-control" name="ADM_USUARIO" value="{{usuario.ADM_USUARIO }}" required>
+        </div>
+        <div class="form-gropup col-md-4">
+          <label>Cédula</label>
+          <input type="text" class="form-control" name="ADM_CEDULA" value="{{usuario.ADM_CEDULA}}" required onkeyup="validarcedulaAdd()">
+        </div>
+        <div class="form-gropup col-md-6">
+          <label>Nombres</label>
+          <input type="text" class="form-control" name="ADM_NOMBRE" value="{{usuario.ADM_NOMBRE}}" required pattern="[A-Za-z\s]{1,}" title="Solo letras">
+        </div>
+        <div class="form-gropup col-md-6">
+          <label>Apellidos</label>
+          <input type="text" class="form-control" name="ADM_APELLIDO" value="{{usuario.ADM_APELLIDO}}" required pattern="[A-Za-z\s]{1,}" title="Solo letras">
+        </div>
+        <div class="form-gropup col-md-9">
+          <label>Correo</label>
+          <input type="email" class="form-control" name="ADM_CORREO" value="{{usuario.ADM_CORREO}}" required>
+        </div>
+        <div class="form-gropup col-md-2">
+          <label>Télefono</label>
+          <input type="text" class="form-control" name="ADM_TELEFONO" value="{{usuario.ADM_TELEFONO}}" required pattern="[0-9]{7,10}" title="Solo números telefónicos">
+        </div>
+        <div class="form-gropup col-md-12">
+          <label></label>
+        </div>
+        <input type="hidden" class="form-control" name="COND_ID" value="{{usuario.COND_ID}}">
+        <input type="hidden" class="form-control" name="ADM_ID" value="{{usuario.ADM_ID}}">
+         <input type="hidden" class="form-control" name="ADM_CORREO_A" value="{{usuario.ADM_CORREO}}">
+          <input type="hidden" class="form-control" name="ADM_CEDULA_A" value="{{usuario.ADM_CEDULA}}">
+          <input type="hidden" class="form-control" name="ADM_USUARIO_A" value="{{usuario.ADM_USUARIO}}">
+        <div class="form-gropup col-md-9">
+          <button value="btn_modificarDatos" type="submit" name="accion" class="btn btn-warning" onclick="validarcedulaFinAdd()">
+            <i class="fas fa-share-square"></i> Modificar</button>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+</div>
+

@@ -1,0 +1,14 @@
+<main class="index">
+    <header class="masthead d-flex">
+        <div class="container text-center my-auto" style=" background-color: rgba(0,0,0,0.2); border-radius: 25px; padding: 2rem 0rem; margin: 0px 10rem;">
+            <img src="img/logo.png" class="w-75 mb-5"/>
+            <h3 class="mb-5">
+                <em>La mejor forma de administrar sus Inmuebles!</em>
+            </h3>
+            <a class="btn btn-primary btn-lg" {{#if usuario}} href="/profile" {{else}} href="/signin" {{/if}}>
+                <i class="fas fa-play-circle"></i> Empezar
+            </a>
+        </div>
+        <div class="overlay"></div>
+    </header>
+</main>

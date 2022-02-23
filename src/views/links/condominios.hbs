@@ -1,0 +1,177 @@
+<script>
+  function generarPDFCondominios() {
+    var doc = new jsPDF();
+    var header = function (data) {
+      doc.setFontSize(18);
+      doc.setTextColor(40);
+      doc.setFontStyle('normal');
+      doc.addImage(imgData, 'PNG', 5, 5, 20, 22)
+      doc.text("Reporte de Inmuebles ", 100, 25, 'center');
+    };
+    doc.autoTable({ html: '#myTable', margin: { top: 30 }, beforePageContent: header, theme: 'grid' });
+    doc.save('Inmueble__Informe_' + fecha_actual() + '.pdf');
+  }
+</script>
+<div class="container">
+  <form method="post" action="/crud_condominio">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Condominio_Modal_Add" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-plus-circle"> </i> Agregar Inmueble</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>NOMBRE DEL INMUEBLE</label>
+                <input type="text" class="form-control" name="COND_NOMBRE" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>DIRECCIÓN DEL INMUEBLE</label>
+                <input type="text" class="form-control" name="COND_DIRECCION" required>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>CAPACIDAD (CASAS, DEPARTAMENTOS, VILLAS, PARQUEADEROS, ETC.)</label>
+                <textarea class="form-control" name="COND_MISION" rows="5"></textarea>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>LUGARES ADICIONALES (ÁREAS VERDES, CANCHAS, SALA COMUNAL, PARQUEADEROS VISITAS, ETC.)</label>
+                <textarea class="form-control" name="COND_VISION" rows="5"></textarea>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>REGLAMENTO</label>
+                <textarea class="form-control" name="COND_REGLAMENTO" rows="10"></textarea>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="COND_ESTADO" value="ACTIVO">
+          <input type="hidden" class="form-control" value="{{condominio.COND_ID}}" name="COND_ID">
+          <div class="modal-footer">
+            <button value="btn_ingresarCondominio" type="submit" name="accion" class="btn btn-success">
+              <i class="fas fa-plus-circle"> </i> Agregar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form method="post" action="/crud_condominio">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Condominio_Modal_Edit" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-edit"> </i> Editar Inmueble</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>NOMBRE DEL INMUEBLE</label>
+                <input type="text" class="form-control" name="COND_NOMBRE" value="{{condominio.COND_NOMBRE}}" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>DIRECCIÓN DEL INMUEBLE</label>
+                <input type="text" class="form-control" name="COND_DIRECCION" value="{{condominio.COND_DIRECCION}}"
+                  required>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>CAPACIDAD (CASAS, DEPARTAMENTOS, VILLAS, PARQUEADEROS, ETC.)</label>
+                <textarea class="form-control" name="COND_MISION" rows="5">{{condominio.COND_MISION}}</textarea>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>ADICIONALES (ÁREAS VERDES, CANCHAS, SALA COMUNAL, PARQUEADEROS VISITAS, ETC.)</label>
+                <textarea class="form-control" name="COND_VISION" rows="5">{{condominio.COND_VISION}}</textarea>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>REGLAMENTO</label>
+                <textarea class="form-control" name="COND_REGLAMENTO"
+                  rows="10">{{condominio.COND_REGLAMENTO}}</textarea>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="COND_ESTADO" value="ACTIVO">
+          <input type="hidden" class="form-control" value="{{condominio.COND_ID}}" name="COND_ID">
+          <div class="modal-footer">
+            <button value="btn_modificarCondominio" type="submit" name="accion" class="btn btn-warning">
+              <i class="fas fa-edit"></i> Modificar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>
+            <i class="fas fa-city fa-lg"></i> Gestión
+            <b>Inmuebles</b>
+          </h2>
+        </div>
+        <div class="col-sm-6">
+          <a class="btn btn-success" data-toggle="modal" data-target="#Condominio_Modal_Add">
+            <i class="fas fa-plus-circle"></i>
+            <span>Agregar Inmueble</span>
+          </a>
+          <a class="btn btn-danger" onclick="generarPDFCondominios();">
+            <i class="fas fa-print"></i>
+            <span>Imprimir</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover"></table>
+      <table id="myTable" class="table table-hover table-">
+        <thead>
+          <tr>
+            <th>
+              <i class="fas fa-signature"></i> NOMBRE</th>
+            <th>
+              <i class="fas fa-map-marker-alt"></i> DIRECCIÓN</th>
+            <th>
+              <i class="fas fa-exclamation"> </i> ACCIÓN</th>
+          </tr>
+        </thead>
+        {{#each condominios}}
+        <tr>
+          <td>{{COND_NOMBRE}}</td>
+          <td>{{COND_DIRECCION}}</td>
+          <form action="/crud_condominio" method="post">
+            <td>
+              <center>
+                <input type="hidden" value="{{COND_ID}}" name="COND_ID">
+                <button value="btn_seleccioanrCondominio" type="submit" name="accion" class="btn btn-secondary ">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button value="btn_eliminarCondominio" type="submit" name="accion" class="btn btn-secondary ">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </center>
+            </td>
+          </form>
+        </tr>
+
+        {{else}}
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No existen Condominios.</p>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Condominio_Modal_Add">
+              Agregar Inmueble
+            </button>
+          </div>
+        </div>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+</div>
+

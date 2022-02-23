@@ -1,0 +1,251 @@
+<script>
+  function generarPDFMultas() {
+    var doc = new jsPDF();
+    var header = function (data) {
+      doc.setFontSize(18);
+      doc.setTextColor(40);
+      doc.setFontStyle('normal');
+      doc.addImage(imgData, 'PNG', 5, 5, 20, 22)
+      doc.text("Reporte de Multas " + fecha_actual(), 100, 25, 'center');
+    };
+    doc.autoTable({ html: '#myTable', margin: { top: 30 }, beforePageContent: header, theme: 'grid' });
+    doc.save('Multas_Informe_' + fecha_actual() + '.pdf');
+  }
+</script>
+
+<div class="container">
+  <form method="post" action="/crud_multas" enctype="multipart/form-data">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Multas_Modal_Add" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-plus-circle"></i> Agregar Multa</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>USUARIO</label>
+                <select class="selectpicker form-control" data-live-search="true" name="USU_ID" required>
+                  {{#each usuarios}}
+                  <option value="{{USU_ID}}">{{USU_NOMBRE}} {{USU_CEDULA}}</option>
+                  {{/each}}
+                </select>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>MOTIVO</label>
+                <input type="text" class="form-control" name="MUL_CAUSA" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>MENSAJE</label>
+                <input type="text" class="form-control" name="MUL_MENSAJE" required>
+              </div>
+              <div class="form-gropup col-md-3">
+                <label>VALOR</label>
+                <table>
+                  <td>
+                    <h6>$</h6>
+                  </td>
+                  <td><input type="number" step="0.01" class="form-control" name="MUL_VALOR" required></td>
+                </table>
+
+              </div>
+              <div class="form-gropup col-md-3">
+                <label>ABONO</label>
+                <table>
+                  <td>
+                    <h6>$</h6>
+                  </td>
+                  <td><input type="number" step="0.01" class="form-control" name="MUL_ABONO"></td>
+                </table>
+              </div>
+              <div class="form-gropup col-md-3   ">
+                <label>ESTADO</label>
+                <select class="selectpicker form-control" data-live-search="true" name="MUL_ESTADO" required>
+                  <option value="NO PAGADO">NO PAGADO</option>
+                  <option value="PAGADO">PAGADO</option>
+                </select>
+              </div>
+              <div class="form-gropup col-md-9   ">
+                <label>EVIDENCIA</label>
+                <div class="custom-file">
+                  <input type="file" name="image" class="custom-file-input"
+                    accept="image/x-png, image/gif, image/jpeg, image/jpg">
+                  <label class="custom-file-label" for="inputGroupFile01">Seleccione una Imagen</label>
+                </div>
+              </div>
+              <input type="hidden" class="form-control" name="MUL_ID" value="{{multa.MUL_ID}}">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button value="btn_ingresarMulta" type="submit" name="accion" class="btn btn-success">
+              <i class="fas fa-plus-circle"></i> Agregar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+  </form>
+  <form method="post" action="/crud_multas">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Multas_Modal_Edit" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-edit"></i> Editar Multa</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>USUARIO</label>
+                <select class="selectpicker form-control" name="USU_ID" required>
+                  <option value="{{multa.USU_ID}}">{{multa.USU_NOMBRE}} {{multa.USU_CEDULA}}</option>
+                </select>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>MOTIVO</label>
+                <input type="text" class="form-control" name="MUL_CAUSA" value="{{multa.MUL_CAUSA}}" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>MENSAJE</label>
+                <input type="text" class="form-control" name="MUL_MENSAJE" value="{{multa.MUL_MENSAJE}}" required>
+              </div>
+              <div class="form-gropup col-md-3">
+                <label>VALOR</label>
+                <table>
+                  <td>
+                    <h6>$</h6>
+                  </td>
+                  <td><input type="number" step="0.01" class="form-control" name="MUL_VALOR" value="{{multa.MUL_VALOR}}"
+                      required></td>
+                </table>
+
+              </div>
+              <div class="form-gropup col-md-3">
+                <label>ABONO</label>
+                <table>
+                  <td>
+                    <h6>$</h6>
+                  </td>
+                  <td><input type="number" step="0.01" class="form-control" name="MUL_ABONO"
+                      value="{{multa.MUL_ABONO}}"></td>
+                </table>
+              </div>
+              <div class="form-gropup col-md-3   ">
+                <label>ESTADO</label>
+                <select class="selectpicker form-control" data-live-search="true" name="MUL_ESTADO" required>
+                  <option value="{{multa.MUL_ESTADO}}">{{multa.MUL_ESTADO}}</option>
+                  <option value="NO PAGADO">NO PAGADO</option>
+                  <option value="PAGADO">PAGADO</option>
+                </select>
+              </div>
+              {{#if multa.MUL_PATH_IMG}}
+               <div class="form-gropup col-md-12">
+                <label>EVIDENCIA</label>
+                <br>
+                <center><img src="multas/{{multa.MUL_PATH_IMG}}" class="img-fluid"></center>
+                
+              </div>
+              {{/if}}
+              <input type="hidden" class="form-control" name="MUL_ID" value="{{multa.MUL_ID}}">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button value="btn_modificarMulta" type="submit" name="accion" class="btn btn-warning">
+              <i class="fas fa-edit"></i> Modificar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+  </form>
+
+
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>
+            <i class="fas fa-money-check-alt fa-lg"></i> Gestión
+            <b>Multas</b>
+          </h2>
+        </div>
+        <div class="col-sm-6">
+          <a class="btn btn-success" data-toggle="modal" data-target="#Multas_Modal_Add">
+            <i class="fas fa-plus-circle"></i>
+            <span>Agregar Multa</span>
+          </a>
+          <a class="btn btn-danger" onclick="generarPDFMultas();">
+            <i class="fas fa-print"></i>
+            <span>Imprimir</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover"></table>
+      <table id="myTable" class="table table-hover table-">
+        <thead>
+          <tr>
+            <th>
+              <i class="fas fa-user"></i> Usuario</th>
+            <th>
+              <i class="fas fa-phone"></i> Teléfono</th>
+            <th>
+              <i class="fas fa-crosshairs"></i> Causa</th>
+            <th>
+              <i class="fas fa-battery-half"></i> Estado</th>
+            <th>
+              <i class="fas fa-dollar-sign"></i> Valor</th>
+            <th>
+              <i class="fas fa-dollar-sign"></i> Abono</th>
+            <th>
+              <i class="fas fa-exclamation"> </i> Acción</th>
+          </tr>
+        </thead>
+        {{#each multas}}
+        <tr>
+          <td>{{USU_NOMBRE}}</td>
+          <td>{{USU_TELEFONO}}</td>
+          <td>{{MUL_CAUSA}}</td>
+          <td>{{MUL_ESTADO}}</td>
+          <td>${{MUL_VALOR}}</td>
+          <td>${{MUL_ABONO}}</td>
+          <form action="/crud_multas" method="post">
+            <td>
+              <center>
+                <input type="hidden" value="{{MUL_ID}}" name="MUL_ID">
+                <input type="hidden" value="{{MUL_PATH_IMG}}" name="MUL_PATH_IMG">
+
+                <button value="btn_seleccionarMulta" type="submit" name="accion" class="btn btn-secondary">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button value="btn_eliminarMulta" type="submit" name="accion" class="btn btn-secondary">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </center>
+            </td>
+          </form>
+        </tr>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No existen Multas.</p>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Multas_Modal_Add">
+              Agregar Multa
+            </button>
+          </div>
+        </div>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,153 @@
+<script>
+  function generarPDFReservacion() {
+    var doc = new jsPDF();
+    var header = function (data) {
+      doc.setFontSize(18);
+      doc.setTextColor(40);
+      doc.setFontStyle('normal');
+      doc.addImage(imgData, 'PNG', 5, 5, 20, 22)
+      doc.text("Reporte de Reservaciones " + fecha_actual(), 100, 25, 'center');
+    };
+    doc.autoTable({ html: '#myTable', margin: { top: 30 }, beforePageContent: header, theme: 'grid' });
+    doc.save('Reservaciones_Informe_' + fecha_actual() + '.pdf');
+  }
+</script>
+<div class="container">
+  <form method="post" action="/crud_reservaciones">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Reservacion_modal" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-plus-circle"></i> Atender Reservación</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>FECHA</label>
+                <input type="text" class="form-control" name="RES_FECHA" value="{{reservacion.RES_FECHA}}"
+                  readonly="readonly">
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>HORA INICIO</label>
+                <input type="time" class="form-control" name="RES_HORA_INICIO" value="{{reservacion.RES_HORA_INICIO}}"
+                  readonly="readonly">
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>HORA FIN</label>
+                <input type="time" class="form-control" name="RES_HORA_FIN" value="{{reservacion.RES_HORA_FIN}}"
+                  readonly="readonly">
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>DESCRIPCIÓN</label>
+                <textarea class="form-control" rows="5" id="RES_DESCRIP" name="RES_DESCRIP"
+                  readonly="readonly">{{reservacion.RES_DESCRIP}}</textarea>
+              </div>
+              <div class="form-gropup col-md-8">
+                <label>USUARIO</label>
+                <input type="text" class="form-control" name="USU_NOMBRE" value="{{reservacion.USU_NOMBRE}}"
+                  readonly="readonly">
+
+              </div>
+              <div class="form-gropup col-md-4   ">
+                <label>Estado</label>
+                <select class="selectpicker form-control" name="RES_ESTADO" required>
+                  <option value="{{reservacion.RES_ESTADO}}">{{reservacion.RES_ESTADO}}</option>
+                  <option value="ACEPTADO">ACEPTADO</option>
+                  <option value="NO ACEPTADO">NO ACEPTADO</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="RES_ID" value="{{reservacion.RES_ID}}">
+          <input type="hidden" class="form-control" name="USU_ID" value="{{reservacion.USU_ID}}">
+          <div class="modal-footer">
+            <button value="btn_modificarReservacion" type="submit" name="accion" class="btn btn-warning">
+              <i class="fas fa-edit"></i> Modificar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>
+            <i class="fas fa-handshake fa-lg"></i> Gestión
+            <b>Reservaciones </b>
+          </h2>
+        </div>
+        <div class="col-sm-6">
+
+          <a class="btn btn-danger" onclick="generarPDFReservacion();">
+            <i class="fas fa-print"></i>
+            <span>Imprimir</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover"></table>
+      <table id="myTable" class="table table-hover table-">
+        <thead>
+          <tr>
+            <th>
+              <i class="far fa-calendar"></i> Envío</th>
+            <th>
+              <i class="far fa-calendar"></i> Fecha</th>
+            <th>
+              <i class="fas fa-stopwatch"></i> Hora Inicio</th>
+            <th>
+              <i class="fas fa-clock"></i> Hora Fin</th>
+
+            <th>
+              <i class="fas fa-map-marker-alt"></i> Estado</th>
+            <th>
+              <i class="fas fa-exclamation"></i> Acción</th>
+          </tr>
+        </thead>
+        {{#each reservaciones}}
+        <tr>
+          <td>{{RES_DATE}}</td>
+          <td>{{RES_FECHA}}</td>
+          <td>{{RES_HORA_INICIO}}</td>
+          <td>{{RES_HORA_FIN}}</td>
+          <td>{{RES_ESTADO}}</td>
+          <form action="/crud_reservaciones" method="post">
+            <td>
+              <center>
+                <input type="hidden" value="{{RES_ID}}" name="RES_ID">
+                <input type="hidden" value="{{RES_ESTADO}}" name="RES_ESTADO">
+                <input type="hidden" value="{{USU_ID}}" name="USU_ID">
+                <button value="btn_seleccionarReservacion" type="submit" name="accion" class="btn btn-secondary">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button value="btn_eliminarReservacion" type="submit" name="accion" class="btn btn-secondary">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </center>
+            </td>
+
+          </form>
+        </tr>
+
+        {{else}}
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No existen Reservaciones.</p>
+
+          </div>
+        </div>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+</div>

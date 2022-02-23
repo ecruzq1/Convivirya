@@ -1,0 +1,135 @@
+<script>
+  function generarPDFQuejas() {
+    var doc = new jsPDF();
+    var header = function (data) {
+      doc.setFontSize(18);
+      doc.setTextColor(40);
+      doc.setFontStyle('normal');
+      doc.addImage(imgData, 'PNG', 5, 5, 20, 22)
+      doc.text("Reporte de Peticiones " + fecha_actual(), 100, 25, 'center');
+    };
+    doc.autoTable({ html: '#myTable', margin: { top: 30 }, beforePageContent: header, theme: 'grid' });
+    doc.save('Peticiones_Informe_' + fecha_actual() + '.pdf');
+  }
+</script>
+<div class="container">
+  <form method="post" action="/crud_quejas">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Quejas_Modal" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-edit"></i> Editar Petición</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>USUARIO</label>
+                <input readonly type="text" class="form-control" name="USU_NOMBRE" value="{{queja.USU_NOMBRE}}"
+                  required>
+              </div>
+              <div class="form-gropup col-md-3   ">
+                <label>ESTADO</label>
+                <select class="selectpicker form-control" name="QJ_ESTADO" required>
+                  <option value="{{queja.QJ_ESTADO}}">{{queja.QJ_ESTADO}}</option>
+                  <option value="ATENDIDO">ATENDIDO</option>
+                </select>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>ASUNTO</label>
+                <input readonly type="text" class="form-control" name="QJ_ASUNTO" value="{{queja.QJ_ASUNTO}}">
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>MENSAJE</label>
+                <textarea readonly class="form-control" rows="5" id="QJ_MENSAJE"
+                  name="MEN_MENSAJE">{{queja.QJ_MENSAJE}}</textarea>
+              </div>
+              {{#if queja.QJ_PATH_EV }}
+              <div class="form-gropup col-md-12">
+                <label>EVIDENCIA</label>
+                <br>
+                <center><img src="quejas/{{queja.QJ_PATH_EV}}" class="img-fluid"></center>
+                
+              </div>
+              {{/if}}
+
+              <input type="hidden" value="{{queja.QJ_ID}}" name="QJ_ID">
+              <input type="hidden" value="{{queja.USU_ID}}" name="USU_ID">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button value="btn_modificarQueja" type="submit" name="accion" class="btn btn-warning">
+              <i class="fas fa-edit"></i> Modificar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+  </form>
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>
+            <i class="fas fa-exclamation-triangle fa-lg"></i> Gestión
+            <b>Peticiones</b>
+          </h2>
+        </div>
+        <div class="col-sm-6">
+          <a class="btn btn-danger" onclick="generarPDFQuejas();">
+            <i class="fas fa-print"></i>
+            <span>Imprimir</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover"></table>
+      <table id="myTable" class="table table-hover table-">
+        <thead>
+          <tr>
+            <th>
+              <i class="fas fa-signature"></i> Usuario</th>
+            <th>
+              <i class="fas fa-sticky-note"></i> Asunto</th>
+            <th>
+              <i class="fas fa-battery-half"></i> Estado</th>
+            <th style="width: 100px;">
+              <i class="fas fa-exclamation"> </i> Acción</th>
+          </tr>
+        </thead>
+        {{#each quejas}}
+        <tr>
+          <td>{{USU_NOMBRE}}</td>
+          <td>{{QJ_ASUNTO}}</td>
+          <td>{{QJ_ESTADO}}</td>
+          <form action="/crud_quejas" method="post">
+            <td>
+              <center>
+                <input type="hidden" value="{{QJ_ESTADO}}" name="QJ_ESTADO">
+                <input type="hidden" value="{{QJ_ID}}" name="QJ_ID">
+                <input type="hidden" value="{{USU_ID}}" name="USU_ID">
+                 <input type="hidden" value="{{QJ_ASUNTO}}" name="QJ_ASUNTO">
+                <button value="btn_seleccionarQueja" type="submit" name="accion" class="btn btn-secondary">
+                  <i class="fas fa-edit"></i>
+                </button>
+              </center>
+            </td>
+          </form>
+        </tr>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No existen Peticiones</p>
+          </div>
+        </div>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+</div>

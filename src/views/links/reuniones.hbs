@@ -1,0 +1,210 @@
+<script>
+  function generarPDFReunion() {
+    var doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.setTextColor(40);
+    doc.setFontStyle('normal');
+    doc.addImage(imgData, 'PNG', 5, 5, 20, 22)
+    doc.text("Reporte de Reunión " + fecha_actual(), 100, 25, 'center');
+    doc.setFontSize(13);
+    doc.setFontType('bold')
+    doc.text("FECHA:", 25, 40);
+    doc.text("HORA:", 120, 40);
+    doc.text("LUGAR:", 25, 50);
+    doc.text("ESTADO:", 120, 50);
+    doc.text("MOTIVO:", 25, 60);
+    doc.text("RESUMEN:", 25, 70);
+    doc.setFontSize(12);
+    doc.setFontStyle('normal');
+    doc.text(document.getElementById("REU_FECHA").value, 30, 45);
+    doc.text(document.getElementById("REU_HORA").value, 125, 45);
+    doc.text(document.getElementById("REU_LUGAR").value, 30, 55);
+    doc.text(document.getElementById("REU_ESTADO").value, 125, 55);
+    doc.text(document.getElementById("REU_DATA").value, 30, 65);
+    doc.text(document.getElementById("REU_RESUMEN").value, 30, 75);
+
+
+    doc.save('Reunion_Informe_' + fecha_actual() + '.pdf');
+  }
+</script>
+<div class="container">
+  <form method="post" action="/crud_reuniones">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Reunion_modal_Add" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-plus-circle"></i> Agendar Reunión</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>FECHA</label>
+                <input type="Date" class="form-control" name="REU_FECHA" required>
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>HORA</label>
+                <input type="time" class="form-control" name="REU_HORA" required>
+              </div>
+              <div class="form-gropup col-md-8">
+                <label>LUGAR</label>
+                <input type="text" class="form-control" name="REU_LUGAR" required>
+              </div>
+              <div class="form-gropup col-md-4   ">
+                <label>ESTADO</label>
+                <input type="text" class="form-control" name="REU_ESTADO" value="AGENDADA" readonly>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>MOTIVO</label>
+                <input type="text" class="form-control" name="REU_DATA" required>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="REU_ID" value="{{reunion.REU_ID}}">
+          <div class="modal-footer">
+            <button value="btn_ingresarReunion" type="submit" name="accion" class="btn btn-success">
+              <i class="fas fa-plus-circle"></i> Agregar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Modal -->
+  <div class="modal fade bd-example-modal-lg" id="Reunion_modal_Edit" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <form method="post" action="/crud_reuniones">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-edit"></i> Editar Reunión</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>FECHA</label>
+                <input type="Date" class="form-control" id="REU_FECHA" name="REU_FECHA" value="{{reunion.REU_FECHA}}">
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>HORA</label>
+                <input type="time" class="form-control" id="REU_HORA" name="REU_HORA" value="{{reunion.REU_HORA}}"
+                  required>
+              </div>
+              <div class="form-gropup col-md-8">
+                <label>LUGAR</label>
+                <input type="text" class="form-control" id="REU_LUGAR" name="REU_LUGAR" value="{{reunion.REU_LUGAR}}"
+                  required>
+              </div>
+              <div class="form-gropup col-md-4   ">
+                <label>ESTADO</label>
+                <select class="selectpicker form-control" id="REU_ESTADO" name="REU_ESTADO" required>
+                  <option value="{{reunion.REU_ESTADO}}">{{reunion.REU_ESTADO}}</option>
+                  <option value="AGENDADA">AGENDADA</option>
+                  <option value="FINALIZADA">FINALIZADA</option>
+                  <option value="CANCELADA">CANCELADA</option>
+                </select>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>MOTIVO</label>
+                <input type="text" class="form-control" id="REU_DATA" name="REU_DATA" value="{{reunion.REU_DATA}}"
+                  required>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label>RESUMEN</label>
+                <textarea class="form-control" id="REU_RESUMEN" name="REU_RESUMEN"
+                  rows="10">{{reunion.REU_RESUMEN}}</textarea>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="REU_ID" value="{{reunion.REU_ID}}">
+          <input type="hidden" class="form-control" name="COND_ID" value="{{reunion.COND_ID}}">
+          <div class="modal-footer">
+            <a class="btn btn-danger" onclick="generarPDFReunion();">
+              <i class="fas fa-print"></i>
+              <span>Imprimir</span>
+            </a>
+            <button value="btn_modificarReunion" type="submit" name="accion" class="btn btn-warning">
+              <i class="fas fa-edit"></i> Modificar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>
+            <i class="fas fa-handshake fa-lg"></i> Gestión
+            <b>Reunión </b>
+          </h2>
+        </div>
+        <div class="col-sm-6">
+          <a class="btn btn-success" data-toggle="modal" data-target="#Reunion_modal_Add">
+            <i class="fas fa-plus-circle"></i>
+            <span>Agendar Reunón</span>
+          </a>
+
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover"></table>
+      <table id="myTable" class="table table-hover table-">
+        <thead>
+          <tr>
+            <th>
+              <i class="far fa-clock"></i> Hora</th>
+            <th>
+              <i class="fas fa-calendar-alt"></i> Fecha</th>
+            <th>
+              <i class="fas fa-map-marker-alt"></i> Lugar</th>
+            <th>
+              <i class="fas fa-map-marker-alt"></i> Motivo</th>
+            <th>
+              <i class="fas fa-exclamation"></i> Acción</th>
+          </tr>
+        </thead>
+        {{#each reuniones}}
+        <tr>
+          <td>{{REU_HORA}}</td>
+          <td>{{REU_FECHA}}</td>
+          <td>{{REU_LUGAR}}</td>
+          <td>{{REU_DATA}}</td>
+          <form action="/crud_reuniones" method="post">
+            <td>
+              <center>
+                <input type="hidden" value="{{REU_ID}}" name="REU_ID">
+                <button value="btn_seleccionarReunion" type="submit" name="accion" class="btn btn-secondary">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button value="btn_eliminarReunion" type="submit" name="accion" class="btn btn-secondary">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </center>
+            </td>
+          </form>
+        </tr>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No existen Reuniones.</p>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Reunion_modal_Add">
+              Agregar Reunión
+            </button>
+          </div>
+        </div>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+</div>
+

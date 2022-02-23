@@ -1,0 +1,184 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"
+    integrity="sha256-gJWdmuCRBovJMD9D/TVdo4TIK8u5Sti11764sZT1DhI=" crossorigin="anonymous"></script>
+<script>
+    function generarPDFInfo() {
+        var doc = new jsPDF(), margin = 0.5, verticalOffset = margin;
+        doc.setFontSize(18);
+        doc.setTextColor(40);
+        doc.setFontStyle('normal');
+        doc.addImage(imgData, 'PNG', 5, 5, 20, 22)
+        doc.text("Datos Inmueble" + fecha_actual(), 100, 25, 'center');
+        doc.setFontSize(13);
+        doc.setFontType('bold')
+        doc.text("NOMBRE:", 25, 40);
+        doc.text("DIRECCIÓN:", 25, 50);
+        doc.text("CAPACIDAD (CASAS, DEPARTAMENTOS, VILLAS, PARQUEADEROS, ETC.):", 25, 80);
+        doc.text("LUGARES ADICIONALES (ÁREAS VERDES, CANCHAS, SALA COMUNAL, PARQUEADEROSVISITAS, ETC.):", 25, 120);
+        doc.text("REGLAMENTO:", 25, 160);
+        doc.setFontSize(11);
+        doc.setFontStyle('normal');
+        doc.text(document.getElementById("COND_NOMBRE").value, 30, 45);
+        doc.text(document.getElementById("COND_DIRECCION").value, 30, 55);
+        doc.text(doc.splitTextToSize(document.getElementById("COND_MISION").value, 160), 30, 85);
+        doc.text(doc.splitTextToSize(document.getElementById("COND_VISION").value, 160), 30, 125);
+        doc.text(doc.splitTextToSize(document.getElementById("COND_REGLAMENTO").value, 160), 30, 165);
+        doc.save('Inmueble_Informe_' + fecha_actual() + '.pdf');
+    }
+</script>
+
+<div class="container col-sm-12" id="contenido">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <h2>
+                    <i class="fas fa-info-circle fa-lg"></i>
+                    Información del
+                    <b>Inmueble</b>
+                </h2>
+            </div>
+        </div>
+        <form method="post" action="/update_info" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-gropup col-md-6">
+                    <label>NOMBRE DEL INMUEBLE</label>
+                    <input type="text" class="form-control" id="COND_NOMBRE" name="COND_NOMBRE"
+                        value="{{condominio.COND_NOMBRE}}" required>
+                </div>
+                <div class="form-gropup col-md-6">
+                    <label>DIRECCIÓN DEL INMUEBLE</label>
+                    <input type="text" class="form-control" id="COND_DIRECCION" name="COND_DIRECCION"
+                        value="{{condominio.COND_DIRECCION}}" required>
+                </div>
+                <div class="form-gropup col-md-6">
+                    <label>LOGO</label>
+                    <div class="custom-file">
+                        <input type="file" name="logo" class="custom-file-input"
+                            accept="image/x-png, image/gif, image/jpeg, image/jpg">
+                        <label class="custom-file-label" for="inputGroupFile01">Seleccione una Imagen</label>
+                    </div>
+                </div>
+ 		<div class="form-gropup col-md-6">
+                    <label>LINK ARCHIVO</label>
+                    <input type="text" class="form-control" id="COND_LINK" name="COND_LINK"
+                        value="{{condominio.COND_LINK}}">
+                </div>
+                 <input type="hidden" class="form-control" name="COND_INFORMACION"
+                    value="{{condominio.COND_INFORMACION}}">
+                <div class="form-gropup col-md-12  justify-content-center">
+                    <div class="container p-4">
+                        <div class="row">
+                            <div class="col-md-6 mx-auto">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <img src="/{{condominio.COND_INFORMACION}}" style="height: 250px"
+                                            onerror="this.src = 'https://www.netlima.com/directorio/fotos/SIN-LOGO.jpg', style='height: 100px'">
+                                    </div>
+                                    <div class="card-footer" style="align-items:initial;">
+                                        {{#if condominio.COND_INFORMACION}}
+                                        <button value="btn_eliminarlogo" type="submit" name="accion"
+                                            class="btn btn-danger float-left">
+                                            <i class="fas fa-trash-alt"></i> </button>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-gropup col-md-6">
+                    <label>CAPACIDAD (CASAS, DEPARTAMENTOS, VILLAS, PARQUEADEROS, ETC.)</label>
+                    <textarea class="form-control" id="COND_MISION" name="COND_MISION"
+                        rows="5">{{condominio.COND_MISION}}</textarea>
+                </div>
+                <div class="form-gropup col-md-6">
+                    <label>LUGARES ADICIONALES (ÁREAS VERDES, CANCHAS, SALA COMUNAL, PARQUEADEROS VISITAS, ETC.)</label>
+                    <textarea class="form-control" id="COND_VISION" name="COND_VISION"
+                        rows="5">{{condominio.COND_VISION}}</textarea>
+                </div>
+                <div class="form-gropup col-md-12">
+                    <label>REGLAMENTO</label>
+                    <textarea class="form-control" id="COND_REGLAMENTO" name="COND_REGLAMENTO"
+                        rows="10">{{condominio.COND_REGLAMENTO}}</textarea>
+                </div>
+                <div class="form-gropup col-md-12">
+                    <label for=""></label>
+                </div>
+               
+                <div class="form-gropup col-md-12">
+                    <a class="btn btn-danger" onclick="generarPDFInfo();">
+                        <i class="fas fa-print"></i>
+                        <span>Imprimir</span>
+                    </a>
+                    <button value="btn_modificarInfo" type="submit" name="accion" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Modificar</button>
+
+                </div>
+            </div>
+        </form>
+        </br>
+
+
+    </div>
+</div>
+<div id="elementoH"></div>
+<div class="container col-sm-12">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <h2>
+                    <i class="fas fa-images fa-lg"></i>
+                    <b>Imágenes</b>
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card-columns">
+                {{#each imagenes}}
+                <div class="card animated fadeInDown">
+                    <img src="/{{IMG_NOMB}}" id="myImg" class="card-img-top" onclick="onClick(this)">
+                    <div class="card-body">
+                        <form method="post" action="/eliminar_imagen">
+                            <input type="hidden" class="form-control" name="IMG_ID" value="{{IMG_ID}}">
+                            <input type="hidden" class="form-control" name="IMG_NOMB" value="{{IMG_NOMB}}">
+                            <button value="btn_eliminarimagen" type="submit" name="accion" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> </button>
+                        </form>
+
+
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        <form method="post" action="/update_image" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="col-md-4 mx-auto">
+                    <div class="card card-body text-center">
+                        <div class="custom-file">
+                            <input type="file" name="image" class="custom-file-input"
+                                accept="image/x-png, image/gif, image/jpeg, image/jpg">
+                            <label class="custom-file-label" for="inputGroupFile01">Seleccione una Imagen</label>
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">
+                            Subir
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </form>
+
+        <!-- The Modal -->
+        <div id="modal01" class="modal" onclick="this.style.display='none'">
+            <span class="close">&times;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <div class="modal-content">
+                <img id="img01" style="max-width:100%">
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,330 @@
+
+<script>
+  var reqs_id = 0;
+  function removeElement2(ev) {
+
+    var button = ev;
+    var div = button.parentElement;
+    var id = button.id;
+    var field = document.getElementById(id);
+    div.removeChild(button);
+    div.removeChild(field);
+  }
+  function removeElement(ev) {
+    var button = ev.target;
+    var field = button.previousSibling;
+    var div = button.parentElement;
+    div.removeChild(button);
+    div.removeChild(field);
+  }
+  function add() {
+    reqs_id++;
+    //create textbox
+    var input = document.createElement('input');
+    input.type = "text";
+    input.setAttribute("class", "form-control");
+    input.setAttribute("style", "margin: 5px; width: auto;");
+    input.setAttribute('id', 'reqs' + reqs_id);
+    input.setAttribute('name', reqs_id);
+    input.setAttribute('required', 'true');
+
+    var ingreso = document.getElementById("ingreso");
+    //create remove button
+    var remove = document.createElement('button');
+    remove.setAttribute('id', 'reqsr' + reqs_id);
+    remove.setAttribute("class", "btn btn-danger");
+    remove.setAttribute("style", "margin: 5px");
+    remove.onclick = function (e) {
+      removeElement(e)
+    };
+    remove.innerHTML = 'x';
+    //append elements
+    ingreso.appendChild(input);
+    ingreso.appendChild(remove);
+  }
+  function add2() {
+    reqs_id++;
+    //create textbox
+    var input = document.createElement('input');
+    input.type = "text";
+    input.setAttribute("class", "form-control");
+    input.setAttribute("style", "margin: 5px; width: auto;");
+    input.setAttribute('id', 'reqs' + reqs_id);
+    input.setAttribute('name', reqs_id);
+    input.setAttribute('required', 'true');
+
+    var ingreso = document.getElementById("editar");
+    //create remove button
+    var remove = document.createElement('button');
+    remove.setAttribute('id', 'reqsr' + reqs_id);
+    remove.setAttribute("class", "btn btn-danger");
+    remove.setAttribute("style", "margin: 5px");
+    remove.onclick = function (e) {
+      removeElement(e)
+    };
+    remove.innerHTML = 'x';
+    //append elements
+    ingreso.appendChild(input);
+    ingreso.appendChild(remove);
+  }
+
+</script>
+<div class="container">
+
+  <form method="post" action="/crud_preguntas">
+    <!-- Modal sino -->
+    <div class="modal fade bd-example-modal-lg" id="Preguntasn_modal_Add" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-plus-circle"></i> Agregar Pregunta (SI/NO)</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-12">
+                <label>PREGUNTA</label>
+                <textarea class="form-control" rows="4" id="PRE_ENUNCIADO" name="PRE_ENUNCIADO" required></textarea>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="ENC_ID" value="{{encuesta.ENC_ID}}">
+          <input type="hidden" class="form-control" name="PRE_ID">
+          <input type="hidden" class="form-control" name="PRE_TIPO" value="SINO">
+          <div class="modal-footer">
+            <button value="btn_ingresarPreguntasn" type="submit" name="accion" class="btn btn-success">
+              <i class="fas fa-plus-circle"></i> Agregar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form method="post" action="/crud_preguntas">
+    <!-- Modal sino -->
+    <div class="modal fade bd-example-modal-lg" id="Preguntasn_modal_Edit" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-plus-circle"></i> Modificar Pregunta (SI/NO)</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-12">
+                <label>PREGUNTA</label>
+                <textarea class="form-control" rows="4" id="PRE_ENUNCIADO" name="PRE_ENUNCIADO"
+                  required>{{pregunta.PRE_ENUNCIADO}}</textarea>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="ENC_ID" value="{{encuesta.ENC_ID}}">
+          <input type="hidden" class="form-control" name="PRE_ID" value="{{pregunta.PRE_ID}}">
+          <input type="hidden" class="form-control" name="PRE_TIPO" value="SINO">
+          <div class="modal-footer">
+            <button value="btn_modificarPreguntasn" type="submit" name="accion" class="btn btn-warning">
+              <i class="fas fa-edit"></i> Modificar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form method="post" action="/crud_preguntas">
+    <!-- Modal Múltiple -->
+    <div class="modal fade bd-example-modal-lg" id="Preguntamul_modal_Add" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-plus-circle"></i> Agregar Pregunta (Múltiple)</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-12">
+                <label>PREGUNTA</label>
+                <textarea class="form-control" rows="2" id="PRE_ENUNCIADO" name="PRE_ENUNCIADO" required></textarea>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label> </label>
+              </div>
+              <br>
+              <div class="form-gropup col-md-12">
+                <label>OPCIONES</label>
+                <a class="btn btn-primary" value="Add" onclick="add();">
+                  <i style="color: white" class="fas fa-plus-square"></i>
+                </a>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label> </label>
+              </div>
+              <div class="form-gropup input-group col-md-7" id="ingreso" name="ingreso">
+                <input style="margin: 5px; width: auto;" type="text" class="form-control" id="reqs0" name="0" required>
+                <button style="margin: 5px" class="btn btn-danger" disabled>x</button>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="ENC_ID" value="{{encuesta.ENC_ID}}">
+          <input type="hidden" class="form-control" name="PRE_ID">
+          <input type="hidden" class="form-control" name="PRE_TIPO" value="MULTIPLE">
+          <div class="modal-footer">
+            <button value="btn_ingresarPreguntamul" type="submit" name="accion" class="btn btn-success">
+              <i class="fas fa-plus-circle"></i> Agregar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form method="post" action="/crud_preguntas">
+    <!-- Modal Múltiple -->
+    <div class="modal fade bd-example-modal-lg" id="Preguntamul_modal_Edit" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-plus-circle"></i> Modificar Pregunta (Múltiple)</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-12">
+                <label>PREGUNTA</label>
+                <textarea class="form-control" rows="2" id="PRE_ENUNCIADO" name="PRE_ENUNCIADO"
+                  required>{{pregunta.PRE_ENUNCIADO}}</textarea>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label> </label>
+              </div>
+              <br>
+              <div class="form-gropup col-md-12">
+                <label>OPCIONES</label>
+                <a class="btn btn-primary" value="Add" onclick="add2();">
+                  <i style="color: white" class="fas fa-plus-square"></i>
+                </a>
+              </div>
+              <div class="form-gropup col-md-12">
+                <label> </label>
+              </div>
+              <div class="form-gropup input-group col-md-7" id="editar" name="editar">
+                {{#each opciones}}
+                <input style="margin: 5px; width: auto;" type="text" class="form-control" id="{{OPC_ID}}"
+                  name="{{OPC_ID}}" value="{{OPC_DATO}}" required>
+                <button style="margin: 5px" class="btn btn-danger" id="{{OPC_ID}}"
+                  onclick="removeElement2(this)">x</button>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" name="ENC_ID" value="{{encuesta.ENC_ID}}">
+          <input type="hidden" class="form-control" name="PRE_ID" value="{{pregunta.PRE_ID}}">
+          <input type="hidden" class="form-control" name="PRE_TIPO" value="MULTIPLE">
+          <div class="modal-footer">
+            <button value="btn_modificarPreguntamul" type="submit" name="accion" class="btn btn-warning">
+              <i class="fas fa-edit"></i> Modificar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <br>
+  <div class="col-md-6 mx-auto">
+    <div class="card card-body">
+      <div>
+        <h3>
+          <i class="fas fa-poll fa-lg"></i> Encuesta:</h3>
+      </div>
+      <h6>{{encuesta.ENC_DESC}}</h6>
+      <div class="text-right">
+        <a href="/encuestas" class="btn btn-secondary">
+          <i class="fas fa-undo"></i>
+          <span>Regresar</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-7">
+          <h2>
+            <i class="fas fa-question fa-lg"></i> Gestión
+            <b>Preguntas </b>
+          </h2>
+        </div>
+        <div class="col-sm-3">
+          <a class="btn btn-success" onclick="modalPregunta()">
+            <i class="fas fa-plus-circle"></i>
+            <span>Agregar Pregunta</span>
+          </a>
+        </div>
+        <div class="col-sm-2">
+          <select class="custom-select" id="tipo" required>
+            <option value="sino">SI/NO</option>
+            <option value="opmul">Opciòn Mùltiple</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover"></table>
+      <table id="myTable" class="table table-hover table-">
+        <thead>
+          <tr>
+            <th>
+              <i class="fas fa-align-justify"></i> Pregunta</th>
+            <th>
+              <i class="fas fa-tasks"></i> Tipo</th>
+            <th>
+              <i class="fas fa-exclamation"></i> Acción</th>
+          </tr>
+        </thead>
+        {{#each preguntas}}
+        <tr>
+          <td>{{PRE_ENUNCIADO}}</td>
+          <td>{{PRE_TIPO}}</td>
+          <form action="/crud_preguntas" method="post">
+            <td>
+              <center>
+                <input type="hidden" value="{{ENC_ID}}" name="ENC_ID">
+                <input type="hidden" value="{{PRE_ID}}" name="PRE_ID">
+                <button value="btn_seleccionarPregunta" type="submit" name="accion" class="btn btn-secondary"
+                  title="Editar">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <a class="btn btn-secondary" title="Gráfica" href="/respuestas/{{PRE_ID}}">
+                  <i class="fas fa-poll"></i>
+                </a>
+                <a class="btn btn-secondary" title="Resultados" href="/respuestas_detalle/{{PRE_ID}}">
+                  <i class="fas fa-eye"></i>
+                </a>
+                <button value="btn_eliminarPregunta" type="submit" name="accion" class="btn btn-secondary"
+                  title="Borrar">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+
+              </center>
+            </td>
+          </form>
+        </tr>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No existen Preguntas.</p>
+          </div>
+        </div>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+</div>

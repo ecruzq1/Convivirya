@@ -1,0 +1,48 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card text-center">
+                <div class="card-body">
+                    {{#if usuario.SADM_USUARIO}}
+                    <h3>BIENVENIDO! {{usuario.SADM_USUARIO}}</h3>
+                    <h4>{{usuario.SADM_USUARIO}}</h4>
+                    {{else}}
+                    <h3>BIENVENIDO! {{usuario.ADM_USUARIO}}</h3>
+                    <h4>{{usuario.ADM_NOMBRE}} {{usuario.ADM_APELLIDO}}</h4>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{{#if usuario.ADM_USUARIO}}
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card text-center">
+                <div class="card-body">
+                    <img src="/{{condominio.COND_INFORMACION}}" style="height: 250px" onerror="this.src = 'https://www.netlima.com/directorio/fotos/SIN-LOGO.jpg', style='height: 100px'">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card text-center">
+                <div class="card-body">
+
+                    <h3>ADMINISTRACIÓN</h3>
+                    <h4>{{condominio.COND_NOMBRE}}</h4>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{{/if}}

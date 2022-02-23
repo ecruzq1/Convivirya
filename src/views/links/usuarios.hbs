@@ -1,0 +1,344 @@
+<script>
+  function generarPDFUsuarios() {
+    var doc = new jsPDF();
+    var header = function (data) {
+      doc.setFontSize(18);
+      doc.setTextColor(40);
+      doc.setFontStyle('normal');
+      doc.addImage(imgData, 'PNG', 5, 5, 20, 22)
+      doc.text("Reporte de Usuarios " + fecha_actual(), 100, 25, 'center');
+    };
+    doc.autoTable({ html: '#myTable', margin: { top: 30 }, beforePageContent: header, theme: 'grid' });
+    doc.save('Usuarios_Informe_' + fecha_actual() + '.pdf');
+  }
+  function validarcedulaAdd() {
+    var i;
+    var cedula;
+    var acumulado;
+    cedula = document.form_user_add.USU_CEDULA.value;
+    console.log(cedula.length);
+    if (cedula.length == 10) {
+      var instancia;
+      acumulado = 0;
+      for (i = 1; i <= 9; i++) {
+        if (i % 2 != 0) {
+          instancia = cedula.substring(i - 1, i) * 2;
+          if (instancia > 9) instancia -= 9;
+        }
+        else instancia = cedula.substring(i - 1, i);
+        acumulado += parseInt(instancia);
+      }
+      while (acumulado > 0)
+        acumulado -= 10;
+      if (cedula.substring(9, 10) != (acumulado * -1)) {
+        alert("Cedula no valida!!");
+        document.form_user_add.USU_CEDULA.value = "";
+        document.form_user_add.USU_CEDULA.setfocus();
+      }
+
+    } else if (cedula.length > 10) {
+      alert("Cedula no valida!!");
+      document.form_user_add.USU_CEDULA.value = "";
+      document.form_user_add.USU_CEDULA.setfocus();
+    }
+  }
+  function validarcedulaEdit() {
+    var i;
+    var cedula;
+    var acumulado;
+    cedula = document.form_user_edit.USU_CEDULA.value;
+    console.log(cedula.length);
+    if (cedula.length == 10) {
+      var instancia;
+      acumulado = 0;
+      for (i = 1; i <= 9; i++) {
+        if (i % 2 != 0) {
+          instancia = cedula.substring(i - 1, i) * 2;
+          if (instancia > 9) instancia -= 9;
+        }
+        else instancia = cedula.substring(i - 1, i);
+        acumulado += parseInt(instancia);
+      }
+      while (acumulado > 0)
+        acumulado -= 10;
+      if (cedula.substring(9, 10) != (acumulado * -1)) {
+        alert("Cedula no valida!!");
+        document.form_user_edit.USU_CEDULA.value = "";
+        document.form_user_edit.USU_CEDULA.setfocus();
+      }
+
+    } else if (cedula.length > 10) {
+      alert("Cedula no valida!!");
+      document.form_user_edit.USU_CEDULA.value = "";
+      document.form_user_edit.USU_CEDULA.setfocus();
+    }
+  }
+  function validarcedulaFinAdd() {
+    var i;
+    var cedula;
+    var acumulado;
+    cedula = document.form_user_add.USU_CEDULA.value;
+    var instancia;
+    acumulado = 0;
+    for (i = 1; i <= 9; i++) {
+      if (i % 2 != 0) {
+        instancia = cedula.substring(i - 1, i) * 2;
+        if (instancia > 9) instancia -= 9;
+      }
+      else instancia = cedula.substring(i - 1, i);
+      acumulado += parseInt(instancia);
+    }
+    while (acumulado > 0)
+      acumulado -= 10;
+    if (cedula.substring(9, 10) != (acumulado * -1)) {
+      alert("Cedula no valida!!");
+      document.form_user_add.USU_CEDULA.value = "";
+      document.form_user_add.USU_CEDULA.setfocus();
+    }
+
+
+  }
+  function validarcedulaFinEdit() {
+    var i;
+    var cedula;
+    var acumulado;
+    cedula = document.form_user_edit.USU_CEDULA.value;
+    var instancia;
+    acumulado = 0;
+    for (i = 1; i <= 9; i++) {
+      if (i % 2 != 0) {
+        instancia = cedula.substring(i - 1, i) * 2;
+        if (instancia > 9) instancia -= 9;
+      }
+      else instancia = cedula.substring(i - 1, i);
+      acumulado += parseInt(instancia);
+    }
+    while (acumulado > 0)
+      acumulado -= 10;
+    if (cedula.substring(9, 10) != (acumulado * -1)) {
+      alert("Cedula no valida!!");
+      document.form_user_edit.USU_CEDULA.value = "";
+      document.form_user_edit.USU_CEDULA.setfocus();
+    }
+
+
+  }
+</script>
+<div class="container">
+  <form name="form_user_add" method="post" action="/crud_usuarios">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Users_Modal_Add" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-plus-circle"></i> Agregar Usuario</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>NOMBRES</label>
+                <input type="text" class="form-control" name="USU_NOMBRE" required pattern="[A-Za-z\s]{1,}"
+                  title="Solo letras">
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>CÉDULA</label>
+                <input type="text" class="form-control" id="USU_CEDULA" name="USU_CEDULA" required
+                  onkeyup="validarcedulaAdd()">
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>UBICACIÓN DEL BIEN</label>
+                <input type="text" class="form-control" name="USU_UBICACION" required>
+              </div>
+              <div class="form-gropup col-md-4">
+                <label>TELÉFONO</label>
+                <input type="text" class="form-control" name="USU_TELEFONO" required pattern="[0-9]{7,10}"
+                  title="Solo números">
+              </div>
+              <div class="form-gropup col-md-2">
+                <label>EDAD</label>
+                <input type="text" class="form-control" name="USU_EDAD" required pattern="[0-9]{2}"
+                  title="Solo números">
+              </div>
+              <div class="form-gropup col-md-9">
+                <label>CORREO</label>
+                <input type="email" class="form-control" name="USU_CORREO" required>
+              </div>
+              <div class="form-gropup col-md-3   ">
+                <label>TIPO</label>
+                <select class="selectpicker form-control" name="USU_TIPO" required>
+                  <option value="PROPIETARIO">PROPIETARIO</option>
+                  <option value="ARRENDATARIO">ARRENDATARIO</option>
+                  <option value="OTRO">OTRO</option>
+                </select>
+              </div>
+              <input type="hidden" class="form-control" name="USU_PASSWORD">
+              <input type="hidden" class="form-control" name="USU_FECHA_REG">
+              <input type="hidden" class="form-control" name="USU_ESTADO" value="ACTIVO">
+              <input type="hidden" class="form-control" name="USU_ID">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button value="btn_ingresarUser" type="submit" name="accion" class="btn btn-success"
+              onclick="validarcedulaFinAdd()">
+              <i class="fas fa-plus-circle"></i> Agregar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+  </form>
+  <form name="form_user_edit" method="post" action="/crud_usuarios">
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-lg" id="Users_Modal_Edit" tabindex="-1" role="dialog"
+      aria-labelledby="myLargeModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              <i class="fas fa-edit"></i> Editar Usuario</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-gropup col-md-6">
+                <label>NOMBRES</label>
+                <input type="text" class="form-control" name="USU_NOMBRE" value="{{user.USU_NOMBRE }}" required
+                  pattern="[A-Za-z\s]{1,}" title="Solo letras">
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>CÉDULA</label>
+                <input type="text" class="form-control" id="USU_CEDULA" name="USU_CEDULA" value="{{user.USU_CEDULA}}"
+                  required onkeyup="validarcedulaEdit()">
+              </div>
+              <div class="form-gropup col-md-6">
+                <label>UBICACIÓN DEL BIEN</label>
+                <input type="text" class="form-control" name="USU_UBICACION" value="{{user.USU_UBICACION}}" required>
+              </div>
+              <div class="form-gropup col-md-4">
+                <label>TELÉFONO</label>
+                <input type="text" class="form-control" name="USU_TELEFONO" value="{{user.USU_TELEFONO}}" required
+                  pattern="[0-9]{7,10}" title="Solo números">
+              </div>
+              <div class="form-gropup col-md-2">
+                <label>EDAD</label>
+                <input type="text" class="form-control" name="USU_EDAD" value="{{user.USU_EDAD}}" required
+                  pattern="[0-9]{2}" title="Solo números">
+              </div>
+              <div class="form-gropup col-md-9">
+                <label>CORREO</label>
+                <input type="email" class="form-control" name="USU_CORREO" value="{{user.USU_CORREO}}" required>
+              </div>
+              <div class="form-gropup col-md-3   ">
+                <label>TIPO</label>
+                <select class="selectpicker form-control" name="USU_TIPO" required>
+                  <option value="{{user.USU_TIPO}}">{{user.USU_TIPO}}</option>
+                    <option value="PROPIETARIO">PROPIETARIO</option>
+                    <option value="ARRENDATARIO">ARRENDATARIO</option>
+                    <option value="OTRO">OTRO</option>
+                </select>
+              </div>
+              <input type="hidden" class="form-control" name="USU_PASSWORD" value="{{user.USU_PASSWORD}}">
+              <input type="hidden" class="form-control" name="USU_FECHA_REG" value="{{user.USU_FECHA_REG}}">
+              <input type="hidden" class="form-control" name="USU_ESTADO" value="ACTIVO">
+              <input type="hidden" class="form-control" name="USU_ID" value="{{user.USU_ID}}">
+              <input type="hidden" class="form-control" name="USU_CEDULA_A" value="{{user.USU_CEDULA}}">
+              <input type="hidden" class="form-control" name="USU_CORREO_A" value="{{user.USU_CORREO}}">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button value="btn_reset" type="submit" name="accion" class="btn btn-primary">
+              <i class="fas fa-edit"></i> Resetear Contraseña</button>
+            <button value="btn_modificarUser" type="submit" name="accion" class="btn btn-warning"
+              onclick="validarcedulaFinEdit()">
+              <i class="fas fa-edit"></i> Modificar</button>
+            <button data-dismiss="modal" class="btn btn-secondary">
+              <i class="fas fa-times-circle"></i> Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+  </form>
+  <div class="table-wrapper">
+    <div class="table-title">
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>
+            <i class="fas fa-users fa-lg"> </i>Gestión
+            <b>Usuarios</b>
+          </h2>
+        </div>
+        <div class="col-sm-6">
+          <a class="btn btn-success" data-toggle="modal" data-target="#Users_Modal_Add">
+            <i class="fas fa-plus-circle"></i>
+            <span>Agregar Usuario</span>
+          </a>
+          <a class="btn btn-danger" onclick="generarPDFUsuarios();">
+            <i class="fas fa-print"></i>
+            <span>Imprimir</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-hover"></table>
+      <table id="myTable" class="table table-hover table-">
+        <thead>
+          <tr>
+            <th>
+              <i class="fas fa-signature"></i> Nombre</th>
+            <th>
+              <i class="fas fa-id-card"></i> Cédula</th>
+            <th>
+              <i class="fas fa-map-marker-alt"></i> Ubicación</th>
+            <th>
+              <i class="fas fa-phone-square"></i> Teléfono</th>
+            <th>
+              <i class="fas fa-envelope"></i> Correo</th>
+            <th>
+              <i class="fas fa-child"></i> Tipo</th>
+            <th>
+              <i class="fas fa-exclamation"> </i> Acción</th>
+          </tr>
+        </thead>
+        {{#each usuarios}}
+        <tr>
+          <td>{{USU_NOMBRE}}</td>
+          <td>{{USU_CEDULA}}</td>
+          <td>{{USU_UBICACION}}</td>
+          <td>{{USU_TELEFONO}}</td>
+          <td>{{USU_CORREO}}</td>
+          <td>{{USU_TIPO}}</td>
+          <form action="/crud_usuarios" method="post">
+            <td>
+              <center>
+                <input type="hidden" value="{{USU_ID}}" name="USU_ID">
+                <button value="btn_seleccionarUser" type="submit" name="accion" class="btn btn-secondary ">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button value="btn_eliminarUser" type="submit" name="accion" class="btn btn-secondary ">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </center>
+            </td>
+          </form>
+        </tr>
+        {{else}}
+        <div class="col-md-4 mx-auto">
+          <div class="card card-body text-center">
+            <p>No existen Usuarios.</p>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Users_Modal_Add">
+              Agregar Usuario
+            </button>
+          </div>
+        </div>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+</div>

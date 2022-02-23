@@ -1,0 +1,118 @@
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>
+                        <i class="fas fa-poll fa-lg"></i> Ver
+                        <b>Resultados </b>
+                    </h2>
+                </div>
+                <div class="col-sm-6">
+                    <a href="/preguntas/{{ENC_ID}}" class="btn btn-secondary">
+                        <i class="fas fa-undo"></i>
+                        <span>Regresar</span>
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+        <input type="hidden" class="form-control" name="PRE_ENUNCIADO" id="PRE_ENUNCIADO"
+            value="{{pregunta.PRE_ENUNCIADO}}">
+        <input type="hidden" class="form-control" name="VAR_OPCIONES" id="VAR_OPCIONES" value="{{respuestas}}">
+        <canvas id="popChart" width="150px" height="50px"></canvas>
+
+    </div>
+
+
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+    integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+
+<script>
+    var enc = document.getElementById("VAR_OPCIONES").value;
+    var enu = document.getElementById("PRE_ENUNCIADO").value;
+    var preg = JSON.parse(enc);
+
+
+    var labels = [];
+    var datasets = [];
+    for (var i = 0; i < preg.length; i++) {
+        labels.push(preg[i].OPC_DATO);
+        datasets.push(preg[i].CANT);
+    }
+    var popCanvas = document.getElementById("popChart");
+
+    var chartOptions = {
+        scales: {
+            yAxes: [{
+                barPercentage: 0.5
+            }]
+        },
+        elements: {
+            rectangle: {
+                borderSkipped: 'left',
+            }
+        }
+    };
+    var densityData = {
+        label: enu,
+        data: datasets,
+        backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 2,
+        hoverBorderWidth: 0
+    };
+
+    var barChart = new Chart(popCanvas, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [densityData]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        maxRotation: 90,
+                        minRotation: 80
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+</script>
