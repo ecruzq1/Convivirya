@@ -2,9 +2,9 @@
   "name": "V2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index_w.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index_w.js"
   },
   "keywords": [],
   "author": "",
