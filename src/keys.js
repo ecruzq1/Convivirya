@@ -2,10 +2,10 @@ module.exports = {
 
     database: {
         connectionLimit: 10,
-        host: 'mysql-edwin94.alwaysdata.net',
-        user: 'edwin94_admin',
-        password: 'ligadequito',
-        database: 'edwin94_hogar'
+        host: 'mysql-hugo170983.alwaysdata.net',
+        user: '278414_convivir',
+        password: 'Pululahua.170983',
+        database: 'hugo170983_convivirya'
     }
 
 };
